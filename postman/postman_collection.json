@@ -1,0 +1,53 @@
+{
+	"variables": [],
+	"info": {
+		"name": "JIRA",
+		"_postman_id": "bf0a9fe9-aedf-d9bc-90d2-1d6057485c67",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get current user",
+			"request": {
+				"url": "https://samsao-jira-plugin.atlassian.net/rest/auth/1/session",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"url": "https://samsao-jira-plugin.atlassian.net/rest/auth/1/session",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"url": "https://samsao-jira-plugin.atlassian.net/rest/auth/1/session",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"jpsamsao@mailinator.com\",\n    \"password\": \"samsao-test\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
