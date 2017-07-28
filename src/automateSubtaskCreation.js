@@ -3,26 +3,24 @@ const unirest = require('unirest');
 const BASE_URL = 'https://samsao-jira-plugin.atlassian.net';
 
 module.exports.automateSubtaskCreation = function (requestBody) {
-    const { projectID, issueKey, issueType } = getIssueDetails(requestBody)
-    createSubtasks(projectID, issueKey, issueType);
+    const { projectID, issueKey, issueName } = getIssueDetails(requestBody)
+    createSubtasks(projectID, issueKey, issueName);
 }
 
 function getIssueDetails(issue) {
     const projectID = issue.issue.fields.project.id
     const issueKey = issue.issue.key
-    const issueType = issue.issue.fields.issuetype.id
-    return { projectID, issueKey, issueType }
+    const issueName = issue.issue.fields.issuetype.name
+    return { projectID, issueKey, issueName }
 }
 
-function createSubtasks(projectID, issueKey, issueType) {
+function createSubtasks(projectID, issueKey, issueName) {
     let summaries;
-    switch (issueType) {
-        /// Story
-        case "10001":
+    switch (issueName.toLowerCase()) {
+        case "story":
             summaries = ['Implementation', 'QA', 'Code Review', 'UI/UX Review'];
             break;
-        /// Bug
-        case "10004":
+        case "bug":
             summaries = ['Fix the bug', 'QA', 'Code Review', 'Client Approval'];
             break;
     }
@@ -41,7 +39,7 @@ function createBodyForSubTask(projectID, issueKey, summaries) {
             },
             summary: summary,
             issuetype: {
-                id: "10003"
+                name: "Sub-task"
             }
         }
     }));
