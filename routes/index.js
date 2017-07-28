@@ -31,7 +31,6 @@ module.exports = function (app, addon) {
     app.get('/create-issue', (req, res) => {
         log(req.url);
         res.send();
-        // 
     });
 
     // Add any additional route handlers you need for views or REST resources here...
