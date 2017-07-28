@@ -28,8 +28,22 @@ module.exports = function (app, addon) {
         }
     );
 
+    app.get('/create-issue', (req, res) => {
+        log(req.url);
+        res.send();
+        // 
+    });
+
     // Add any additional route handlers you need for views or REST resources here...
 
+    function log(msg) {
+        var fs = require('fs')
+        var newline = Date() + "\t" + msg + "\n"
+        fs.appendFile('public/log', newline, function (err) {
+            if (err) throw err;
+            console.log('Saved!');
+        });
+    }
 
     // load any additional files you have in routes and apply those to the app
     {

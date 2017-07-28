@@ -47,7 +47,12 @@ app.set('views', viewsDir);
 
 // Declare any Express [middleware](http://expressjs.com/api.html#middleware) you'd like to use here
 // Log requests, using an appropriate formatter by env
-app.use(morgan(devEnv ? 'dev' : 'combined'));
+// create a write stream (in append mode)
+var fs = require('fs');
+var accessLogStream = fs.createWriteStream(path.join(__dirname, 'public/log'), {flags: 'a'})
+
+// setup the logger
+app.use(morgan(devEnv ? 'dev' : 'combined', {stream: accessLogStream}));
 // Include request parsers
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
