@@ -1,4 +1,11 @@
+const unirest = require('unirest');
 module.exports = function (app, addon) {
+
+    const baseURL = 'https://samsao-jira-plugin.atlassian.net';
+    const postHeaders = {
+        'Authorization': 'Basic anBzYW1zYW86c2Ftc2FvLXRlc3Q=',
+        'Content-Type': 'application/json'
+    };
 
     // Root route. This route will serve the `atlassian-connect.json` unless the
     // documentation url inside `atlassian-connect.json` is set
@@ -36,6 +43,8 @@ module.exports = function (app, addon) {
     app.post('/create-issue', (req, res) => {
         log(req.url);
         log(JSON.stringify(req.body));
+        const {projectID, issueKey, issueType} = getIssueDetails(req.body)
+        createSubtasks(projectID, issueKey, issueType);
         res.send();
     });
 
@@ -48,6 +57,52 @@ module.exports = function (app, addon) {
             if (err) throw err;
             console.log('Saved!');
         });
+    }
+
+    function getIssueDetails(issue) {
+        const projectID = issue.issue.fields.project.id
+        const issueKey = issue.issue.key
+        const issueType = issue.issue.fields.issuetype.id
+        return {projectID, issueKey, issueType}
+    }
+
+    function createSubtasks(projectID, issueKey, issueType) {
+        let summaries;
+        switch(issueType) {
+            /// Story
+            case "10001": 
+                summaries = ['Implementation', 'QA', 'Code Review', 'UI/UX Review'];
+            break;
+            /// Bug
+            case "10004": 
+                summaries = ['Fix the bug', 'QA', 'Code Review', 'Client Approval'];
+            break;
+        }
+
+        /// Send Request
+        unirest.post(baseURL + '/rest/api/2/issue/bulk')
+        .headers(postHeaders)
+        .send({
+            issueUpdates: createBodyForSubTask(projectID, issueKey, summaries)
+        })
+        .end()
+    }
+
+    function createBodyForSubTask(projectID, issueKey, summaries) {
+        return summaries.map(summary =>({
+            fields: {
+                parent: {
+                    key: issueKey
+                },
+                project: {
+                    id: projectID
+                },
+                summary: summary,
+                issuetype: {
+                    id: "10003"
+                }
+            }
+        }));
     }
 
     // load any additional files you have in routes and apply those to the app
