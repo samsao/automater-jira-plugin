@@ -21,6 +21,12 @@
         "READ"
     ],
     "modules": {
+        "webhooks": [
+            {
+                "event": "jira:issue_updated",
+                "url": "/update-parent"
+            }
+        ],
         "generalPages": [
             {
                 "key": "hello-world-page-jira",
