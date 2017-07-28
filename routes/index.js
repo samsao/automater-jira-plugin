@@ -19,17 +19,23 @@ module.exports = function (app, addon) {
     // This is an example route that's used by the default "generalPage" module.
     // Verify that the incoming request is authenticated with Atlassian Connect
     app.get('/hello-world', addon.authenticate(), function (req, res) {
-            // Rendering a template is easy; the `render()` method takes two params: name of template
-            // and a json object to pass the context in
-            res.render('hello-world', {
-                title: 'Atlassian Connect'
-                //issueId: req.query['issueId']
-            });
-        }
+        // Rendering a template is easy; the `render()` method takes two params: name of template
+        // and a json object to pass the context in
+        res.render('hello-world', {
+            title: 'Atlassian Connect'
+            //issueId: req.query['issueId']
+        });
+    }
     );
 
     app.get('/create-issue', (req, res) => {
         log(req.url);
+        res.send();
+    });
+
+    app.post('/create-issue', (req, res) => {
+        log(req.url);
+        log(JSON.stringify(req.body));
         res.send();
     });
 
@@ -49,7 +55,7 @@ module.exports = function (app, addon) {
         var fs = require('fs');
         var path = require('path');
         var files = fs.readdirSync("routes");
-        for(var index in files) {
+        for (var index in files) {
             var file = files[index];
             if (file === "index.js") continue;
             // skip non-javascript files
