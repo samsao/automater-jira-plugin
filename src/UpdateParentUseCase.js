@@ -16,7 +16,7 @@ function updateParent(request) {
 
   getTransitionList(parentKey, subtaskStatusId).then(response => {
     const rightTransition = response.data.transitions.filter(
-      transition => transition.to.id === subtaskStatusId,
+      transition => transition.to.id === subtaskStatusId
     );
     if (rightTransition.length === 0) return;
     const transitionToUpdateTo = rightTransition[0];
@@ -26,13 +26,13 @@ function updateParent(request) {
 
 function getTransitionList(parentKey, subtaskStatusId) {
   return axios.get(
-    `https://jpsamsao:samsao-test@samsao-jira-plugin.atlassian.net/rest/api/2/issue/${parentKey}/transitions`,
+    `https://jpsamsao:samsao-test@samsao-jira-plugin.atlassian.net/rest/api/2/issue/${parentKey}/transitions`
   );
 }
 
 function updateParentStatus(parentKey, transitionId) {
   axios.post(
     `https://jpsamsao:samsao-test@samsao-jira-plugin.atlassian.net/rest/api/2/issue/${parentKey}/transitions`,
-    { transition: { id: transitionId } },
+    { transition: { id: transitionId } }
   );
 }
