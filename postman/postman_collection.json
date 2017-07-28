@@ -8,46 +8,86 @@
 	},
 	"item": [
 		{
-			"name": "Get current user",
-			"request": {
-				"url": "https://samsao-jira-plugin.atlassian.net/rest/auth/1/session",
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "Logout",
-			"request": {
-				"url": "https://samsao-jira-plugin.atlassian.net/rest/auth/1/session",
-				"method": "DELETE",
-				"header": [],
-				"body": {},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "Login",
-			"request": {
-				"url": "https://samsao-jira-plugin.atlassian.net/rest/auth/1/session",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
+			"name": "auth/1/session",
+			"description": "",
+			"item": [
+				{
+					"name": "Get current user",
+					"request": {
+						"url": "https://samsao-jira-plugin.atlassian.net/rest/auth/1/session",
+						"method": "GET",
+						"header": [],
+						"body": {},
 						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"username\": \"jpsamsao@mailinator.com\",\n    \"password\": \"samsao-test\"\n}"
+					},
+					"response": []
 				},
-				"description": ""
-			},
-			"response": []
+				{
+					"name": "Logout",
+					"request": {
+						"url": "https://samsao-jira-plugin.atlassian.net/rest/auth/1/session",
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"url": "https://samsao-jira-plugin.atlassian.net/rest/auth/1/session",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"jpsamsao@mailinator.com\",\n    \"password\": \"samsao-test\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "api/2/myself",
+			"description": "",
+			"item": [
+				{
+					"name": "Get myself (user)",
+					"request": {
+						"url": "https://samsao-jira-plugin.atlassian.net/rest/api/2/myself",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "api/2/issue",
+			"description": "",
+			"item": [
+				{
+					"name": "Get issue",
+					"request": {
+						"url": "https://samsao-jira-plugin.atlassian.net/rest/api/2/issue/{issueIdOrKey}",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
