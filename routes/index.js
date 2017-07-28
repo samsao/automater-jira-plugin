@@ -1,5 +1,5 @@
-var axios = require('axios');
 const { automateSubtaskCreation } = require('../src/automateSubtaskCreation.js');
+const { UpdateParentUseCase } = require('../src/UpdateParentUseCase.js');
 
 module.exports = function(app, addon) {
   // Root route. This route will serve the `atlassian-connect.json` unless the
@@ -19,44 +19,16 @@ module.exports = function(app, addon) {
   });
 
   app.post('/update-parent', function(req, res) {
-    const issue = req.body.issue.fields;
-    if (!issue.issuetype.subtask) return;
-    if (!issue.parent) return;
-    const parentStatus = issue.parent.fields.status.statusCategory.name;
-    if (issue.status === 'Done') return;
-    const subtaskStatusId = issue.status.id;
-    const parentKey = issue.parent.key;
-    const subtaskStatus = issue.status.statusCategory.id;
-    axios
-      .get(
-        `https://jpsamsao:samsao-test@samsao-jira-plugin.atlassian.net/rest/api/2/issue/${parentKey}/transitions`,
-      )
-      .then(response => {
-        console.log(response.data.transitions);
-        const rightTransition = response.data.transitions.filter(
-          transition => transition.to.id === subtaskStatusId,
-        );
-        console.log(rightTransition);
-        if (rightTransition.length === 0) return;
-        const transitionToUpdateTo = rightTransition[0];
-        console.log('transition' + transitionToUpdateTo);
-        axios.post(
-          `https://jpsamsao:samsao-test@samsao-jira-plugin.atlassian.net/rest/api/2/issue/${parentKey}/transitions`,
-          { transition: { id: transitionToUpdateTo.id } },
-        );
-      });
-    return axios.post(
-      `https://jpsamsao:samsao-test@samsao-jira-plugin.atlassian.net/rest/api/2/issue/${parentKey}/transitions`,
-      { transition: { id: 21 } },
-    );
+    UpdateParentUseCase(req);
+    res.send();
   });
 
-    app.post('/create-issue', (req, res) => {
-        automateSubtaskCreation(req.body);
-        res.send();
-    });
+  app.post('/create-issue', (req, res) => {
+      automateSubtaskCreation(req.body);
+      res.send();
+  });
 
-    // Add any additional route handlers you need for views or REST resources here...
+  // Add any additional route handlers you need for views or REST resources here...
 
   // Add any additional route handlers you need for views or REST resources here...
 
